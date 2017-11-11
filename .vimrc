@@ -8,7 +8,7 @@
 "    http://www.vim.org/
 "    https://vim.sourceforge.io/ (for ssl connection, at the moment)
 "
-"    - And many tutorials and vimrc's files
+"    - Many tutorials and vimrc's files
 "
 "    https://github.com/amix/vimrc/blob/master/vimrcs/basic.vim
 "    by Amir Salihefendic ( https://github.com/amix/vimrc )
@@ -23,7 +23,9 @@
 "    by Steve Losh ( https://github.com/sjl/ )
 "
 "    http://vim.wikia.com/wiki/Vim_Tips_Wiki
-"    Of course, lots of tips here come from there
+"    Lots of tips here come from there
+"
+"    - The community of #vim on Freenode IRC network
 "
 "  Sections:
 "    > Init
@@ -127,7 +129,7 @@ set encoding=utf-8
 set termencoding=utf-8
 
 " Set how wildmenu list should be displayed
-set wildmode=full
+set wildmode=list:full
 
 " Wildmenu ignore files
 set wildignore=*.o,*~,*.pyc,*.tar,*.tgz,*.rar,*.zip,*.so,*.sl
@@ -200,21 +202,26 @@ set winheight=999
 " }}}
 
 " Statusline ------------------------------------------------------------- {{{
-"set statusline=%<\             " begins with whitespace
-set statusline=%<\ %{exists('g:loaded_fugitive')?fugitive#statusline():''}
-set statusline+=\ %t             " filename
+set statusline=                " begining
+set statusline+=%1*
+set statusline+=%<\            " whitespace
+" fugitive git status
+set statusline+=%{exists('g:loaded_fugitive')?fugitive#statusline():''}
+set statusline+=\ %t           " filename
 set statusline+=\              " whitespace
 set statusline+=%m             " modified
 set statusline+=%r             " read-only
 set statusline+=%y             " filetype
-set statusline+=\[             " whitespace
-set statusline+=%{strlen(&fenc)?&fenc:&enc} " encoding
-set statusline+=\]             " whitespace
+" encoding
+set statusline+=\[%{strlen(&fenc)?&fenc:&enc}\]
+" fileformat
+set statusline+=\[%{&fileformat}\]
 set statusline+=%w             " preview
 set statusline+=%=             " split
-set statusline+=Col:\ \%c      " column number
+set statusline+=%2*
+set statusline+=\ Col:\%c      " column number
 set statusline+=\              " whitespace
-set statusline+=Lin:\ \%l\/\%L " line number/total
+set statusline+=Lin:\%l\/\%L   " line number/total
 set statusline+=\ [%P]
 set statusline+=\              " ends with whitespace
 
@@ -249,7 +256,7 @@ if has ('gui_running')
 
   " Default window size
   set lines=40
-  set columns=140
+  set columns=120
 
   " Options for MacVim
   if os == 'Darwin' || os == 'Mac'
@@ -279,6 +286,11 @@ else
 
 endif
 
+"define 3 custom highlight groups
+hi User1 ctermbg=yellow ctermfg=black   guibg=yellow guifg=brown
+hi User2 ctermbg=brown   ctermfg=yellow  guibg=DarkYellow   guifg=blue
+hi User3 ctermbg=blue  ctermfg=green guibg=blue  guifg=green
+
 " }}}
 
 " MAPPINGS --------------------------------------------------------------- {{{
@@ -296,6 +308,19 @@ nnoremap <leader>sv :source $MYVIMRC<cr>
 " ESC replaced by 'jk' combination
 inoremap jk <esc>
 inoremap <esc> <nop>
+
+" Highlights trailing whitespace at end of lines
+nnoremap <leader>ws :match Error /\v\s+$/<cr>
+
+" Clear matches
+nnoremap <leader>cm :match none<cr>
+
+" Shortcuts fot browsing quickfix window entries
+nnoremap pp :cprevious<cr>
+nnoremap nn :cnext<cr>
+
+" 'grep' command returns results to the quickfix window
+nnoremap <leader>g :silent execute "grep! -R " . shellescape(expand("<cWORD>")) . " ."<cr>:copen<cr>
 
 " Switch CWD to the directory of the open buffer
 map <leader>cd :cd %:p:h<cr>:pwd<cr>
@@ -380,5 +405,5 @@ augroup END
 
 " PLUGINS AND HELPER MAPPINGS -------------------------------------------- {{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 
+
 " }}}
