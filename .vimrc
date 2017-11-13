@@ -305,6 +305,9 @@ nnoremap <leader>ev :tabnew $MYVIMRC<cr>
 " Source vimrc
 nnoremap <leader>sv :source $MYVIMRC<cr>
 
+" Source current file
+nnoremap <leader>sc :source %<cr>
+
 " ESC replaced by 'jk' combination
 inoremap jk <esc>
 inoremap <esc> <nop>
