@@ -323,7 +323,7 @@ nnoremap pp :cprevious<cr>
 nnoremap nn :cnext<cr>
 
 " 'grep' command returns results to the quickfix window
-nnoremap <leader>g :silent execute "grep! -R " . shellescape(expand("<cWORD>")) . " ."<cr>:copen<cr>
+"nnoremap <leader>g :silent execute "grep! -R " . shellescape(expand("<cWORD>")) . " ."<cr>:copen<cr>
 
 " Switch CWD to the directory of the open buffer
 map <leader>cd :cd %:p:h<cr>:pwd<cr>
@@ -408,5 +408,20 @@ augroup END
 
 " PLUGINS AND HELPER MAPPINGS -------------------------------------------- {{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Just a little helper for toggling QuickFix window
+nnoremap <F1> :call QuickfixToggle()<cr>
+
+let g:quickfix_is_open = 0
+
+function! QuickfixToggle()
+  if g:quickfix_is_open
+    cclose
+    let g:quickfix_is_open = 0
+  else
+    copen
+    let g:quickfix_is_open = 1
+  endif
+endfunction
 
 " }}}
